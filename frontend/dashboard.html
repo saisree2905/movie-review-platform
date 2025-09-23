@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern Movie Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="dashboard.css">
+<!-- Icons for sidebar and buttons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<div class="sidebar">
+  <h2>Movies</h2>
+  <a href="dashboard.html" class="active"><i class="fas fa-home"></i> Home</a>
+  <a href="genres.html"><i class="fas fa-film"></i> Genres</a> <!-- Updated to navigate -->
+  <a href="trending.html"><i class="fas fa-fire-alt"></i> Trending</a>
+  <a href="watchlist.html"><i class="fas fa-bookmark"></i> Watchlist</a>
+  <a href="reviews.html"><i class="fas fa-star"></i> Reviews</a>
+  <a href="profile.html"><i class="fas fa-user-circle"></i> Profile</a>
+  <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+</div>
+
+<header>
+  <h1>Welcome, <span id="userName">User </span></h1>
+  <div class="right-section">
+    <div class="search-container">
+      <input type="text" placeholder="Search movies...">
+      <button><i class="fas fa-search"></i></button>
+    </div>
+    <div class="profile-picture">JS</div>
+  </div>
+</header>
+
+<main>
+  <!-- Featured Carousel -->
+  <article class="featured-carousel">
+    <img id="featuredImg" src="https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg" alt="Featured Movie">
+    <div class="carousel-overlay">
+      <div class="carousel-info">
+        <h3 id="featuredTitle">Interstellar</h3>
+      </div>
+    </div>
+    <div class="carousel-controls">
+      <button id="prevBtn">◀</button>
+      <button id="nextBtn">▶</button>
+    </div>
+  </article>
+
+  <div class="main-content-sections">
+    <section class="section">
+      <h2>Trending Movies</h2>
+      <div class="scroll-section" id="trendingSection"></div>
+    </section>
+
+    <section class="section">
+      <h2>Suggested For You</h2>
+      <div class="scroll-section" id="suggestedSection"></div>
+    </section>
+  </div>
+
+  <div class="section" id="searchResultsContainer">
+    <h2>Search Results</h2>
+    <div id="searchResultsSection" class="scroll-container"></div>
+  </div>
+</main>
+
+<footer>
+  &copy; 2025 Movie Platform. All rights reserved. | Contact | Terms | Privacy
+</footer>
+
+<div id="toast" class="toast"></div>
+
+
+<script src="dashboard.js"></script>
+</body>
+</html>

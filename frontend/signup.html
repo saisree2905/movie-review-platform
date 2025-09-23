@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signup - Movie Review Platform</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#121212;color:#eee;overflow-x:hidden;}
+header{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;
+padding:15px 50px;z-index:1000;background:rgba(0,0,0,0.8);}
+header h1{color:#e50914;font-size:26px;font-weight:700;}
+.signup-section{height:100vh;display:flex;justify-content:center;align-items:center;}
+.signup-form-wrapper{background:#1e1e1e;padding:50px;border-radius:15px;width:380px;opacity:0;transform:translateY(20px);transition:.8s;}
+.signup-form-wrapper.show{opacity:1;transform:translateY(0);}
+.signup-form h2{color:#e50914;margin-bottom:30px;text-align:center;}
+.signup-form input{width:100%;padding:15px;margin-bottom:20px;border:1px solid #555;border-radius:10px;background:#121212;color:#eee;font-size:17px;}
+.signup-form button{width:100%;padding:15px;border:none;border-radius:10px;background:#e50914;color:#121212;font-size:19px;cursor:pointer;}
+.signup-form .redirect{margin-top:15px;color:#ccc;font-size:15px;}
+.signup-form .redirect a{color:#e50914;text-decoration:none;}
+.toast { position: fixed; bottom: 20px; right: 20px; background: #333; color: #fff; padding: 1rem 1.5rem; border-radius: 5px; display: none; z-index: 2000; }
+.toast.success { background: green; }
+.toast.error { background: red; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MovieReview</h1>
+</header>
+
+<section class="signup-section">
+  <div class="signup-form-wrapper" id="signupFormWrapper">
+    <form class="signup-form" id="signupForm">
+      <h2>Create Account</h2>
+      <input type="text" name="name" placeholder="Full Name" required/>
+      <input type="email" name="email" placeholder="Email Address" required/>
+      <input type="password" name="password" placeholder="Password" required/>
+      <input type="password" name="confirmPassword" placeholder="Confirm Password" required/>
+      <button type="submit">Sign Up</button>
+      <div class="redirect">Already have an account? <a href="login.html">Login</a></div>
+    </form>
+  </div>
+</section>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const API_BASE = "http://localhost:5000/api";
+
+window.addEventListener('load', () => {
+  const wrapper = document.getElementById('signupFormWrapper');
+  setTimeout(() => { wrapper.classList.add('show'); }, 300);
+});
+
+function showToast(msg, type="info"){
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.className = "toast " + type;
+  toast.style.display = "block";
+  setTimeout(()=>{ toast.style.display="none"; }, 3000);
+}
+
+// Signup form submission
+const signupForm = document.getElementById("signupForm");
+if(signupForm){
+  signupForm.addEventListener("submit", async function(e){
+    e.preventDefault();
+    const name = this.name.value.trim();
+    const email = this.email.value.trim();
+    const password = this.password.value;
+    const confirmPassword = this.confirmPassword.value;
+
+    if(password !== confirmPassword){
+      showToast("Passwords do not match ❌", "error");
+      return;
+    }
+    if(!name || !email || !password){
+      showToast("All fields are required ❌", "error");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password })
+      });
+      const data = await res.json();
+
+      if(res.ok){
+        showToast("Account created successfully ✅", "success");
+
+        // Auto-login after signup
+        const loginRes = await fetch(`${API_BASE}/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+        const loginData = await loginRes.json();
+        if(loginRes.ok && loginData.token && loginData.user){
+          localStorage.setItem("token", loginData.token);
+          localStorage.setItem("user", JSON.stringify(loginData.user));
+          showToast("Logged in automatically ✅", "success");
+          setTimeout(()=>{ window.location.href="profile.html"; }, 500);
+        } else {
+          window.location.href="login.html";
+        }
+
+      } else {
+        showToast(data.error || "Signup failed ❌", "error");
+      }
+    } catch(err){
+      console.error(err);
+      showToast("Signup failed ❌", "error");
+    }
+  });
+}
+</script>
+</body>
+</html>

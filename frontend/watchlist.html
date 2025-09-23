@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watchlist</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="watchlist.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <h2>Movies</h2>
+  <a href="dashboard.html"><i class="fas fa-home"></i> Home</a>
+  <a href="genres.html"><i class="fas fa-film"></i> Genres</a>
+  <a href="trending.html"><i class="fas fa-fire-alt"></i> Trending</a>
+  <a href="watchlist.html" class="active"><i class="fas fa-bookmark"></i> Watchlist</a>
+  <a href="reviews.html"><i class="fas fa-star"></i> Reviews</a>
+  <a href="profile.html"><i class="fas fa-user-circle"></i> Profile</a>
+  <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+</div>
+
+<!-- Header -->
+<header>
+  <h1>My Watchlist</h1>
+  <div class="right-section">
+    <div class="profile-picture">JS</div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<main>
+  <section class="empty-watchlist">
+    <p><i class="fas fa-bookmark"></i> Your watchlist is currently empty</p>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer>
+  &copy; 2025 Movie Platform. All rights reserved.
+</footer>
+
+<div id="toast" class="toast"></div>
+
+</body>
+</html>

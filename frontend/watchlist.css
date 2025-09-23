@@ -1,0 +1,124 @@
+/* ---------- Global Styles ---------- */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  background-color: #121212;
+  color: #fff;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 220px;
+  height: 100%;
+  background: #1f1f1f;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  color: #e50914;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar a,
+.sidebar button {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin: 5px 0;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.sidebar a.active {
+  background: #e50914;
+  border-radius: 5px;
+}
+
+.sidebar a i,
+.sidebar button i {
+  margin-right: 10px;
+}
+
+/* ---------- Header ---------- */
+header {
+  margin-left: 260px;
+  height: 70px;
+  background: #1f1f1f;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 25px;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+
+header h1 {
+  font-size: 24px;
+}
+
+.profile-picture {
+  background: #e50914;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* ---------- Main Content ---------- */
+main {
+  margin-left: 260px;
+  padding: 40px 25px;
+  flex: 1; /* takes remaining space */
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Empty Watchlist ---------- */
+.empty-watchlist {
+  color: #ccc;
+  font-size: 18px;
+  text-align: center;
+  width: 100%;
+  padding: 50px 0;
+  flex: 1; /* ensures it pushes footer down */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.empty-watchlist i {
+  margin-right: 10px;
+  color: #e50914;
+}
+
+/* ---------- Footer ---------- */
+footer {
+  margin-left: 260px;
+  padding: 25px;
+  text-align: center;
+  border-top: 1px solid #333;
+  color: #888;
+  background: #1f1f1f;
+  flex-shrink: 0;
+}

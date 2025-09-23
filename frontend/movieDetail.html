@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Details</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="movieDetail.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Movies</h2>
+    <a href="dashboard.html"><i class="fas fa-home"></i> Home</a>
+    <a href="genres.html"><i class="fas fa-film"></i> Genres</a>
+    <a href="trending.html"><i class="fas fa-fire-alt"></i> Trending</a>
+    <a href="watchlist.html"><i class="fas fa-bookmark"></i> Watchlist</a>
+    <a href="reviews.html"><i class="fas fa-star"></i> Reviews</a>
+    <a href="profile.html"><i class="fas fa-user-circle"></i> Profile</a>
+    <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <h1>🎬 Movie Details</h1>
+    <div class="right-section">
+      <div class="profile-picture">JS</div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="movie-banner">
+      <img id="backdrop" alt="Backdrop">
+      <div class="overlay"></div>
+      <div class="movie-poster">
+        <img id="poster" alt="Poster">
+      </div>
+      <div class="movie-info">
+        <h2 class="title"></h2>
+        <p class="tagline"></p>
+        <p class="overview"></p>
+        <p class="runtime"></p>
+        <p class="release-date"></p>
+        <p class="rating"></p>
+        <div class="genres"></div>
+        <button id="watchlistBtn"><i class="fas fa-bookmark"></i> Add to Watchlist</button>
+      </div>
+    </section>
+
+    <!-- Cast & Crew -->
+    <section class="cast-section">
+      <h2>👥 Cast</h2>
+      <div class="cast-list" id="castList"></div>
+
+      <h2>🎬 Crew</h2>
+      <div class="crew-list" id="crewList"></div>
+    </section>
+
+    <!-- Trailer -->
+    <section class="trailer-section">
+      <h2>🎥 Trailer</h2>
+      <iframe id="trailer" width="100%" height="400" frameborder="0" allowfullscreen></iframe>
+    </section>
+
+    <!-- Reviews -->
+    <section class="reviews-section">
+      <h2>⭐ User Reviews</h2>
+      <form id="reviewForm">
+        <textarea id="reviewInput" placeholder="Write your review..." required></textarea>
+        <button type="submit">Submit</button>
+      </form>
+      <div id="reviewsContainer"></div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Movie Platform. All rights reserved.
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Script -->
+  <script src="movieDetail.js"></script>
+</body>
+</html>

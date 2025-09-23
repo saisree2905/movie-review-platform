@@ -1,0 +1,259 @@
+/* ---------- Global ---------- */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #121212;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 220px;
+  height: 100%;
+  background: #1f1f1f;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  color: #e50914;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar a,
+.sidebar button {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin: 5px 0;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.sidebar a.active {
+  background: #e50914;
+}
+
+.sidebar a i,
+.sidebar button i {
+  margin-right: 10px;
+}
+
+.sidebar a:hover,
+.sidebar button:hover {
+  background: #e50914;
+  color: #fff;
+}
+
+/* ---------- Header ---------- */
+header {
+  margin-left: 260px;
+  height: 70px;
+  background: #1f1f1f;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 25px;
+  border-bottom: 1px solid #333;
+}
+
+.profile-picture {
+  background: #e50914;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* ---------- Main ---------- */
+main {
+  margin-left: 260px;
+  padding: 30px;
+  flex: 1;
+}
+
+/* ---------- Banner ---------- */
+.movie-banner {
+  position: relative;
+  display: flex;
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.movie-banner img#backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 10px;
+  z-index: 0;
+  filter: brightness(0.5);
+}
+
+.movie-banner .overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.movie-poster {
+  flex: 1;
+  max-width: 250px;
+  z-index: 2;
+}
+
+.movie-poster img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+.movie-info {
+  flex: 3;
+  z-index: 2;
+  padding: 20px;
+}
+
+.movie-info h2 {
+  color: #e50914;
+  margin-bottom: 10px;
+}
+
+.movie-info .tagline {
+  font-style: italic;
+  color: #ccc;
+  margin-bottom: 15px;
+}
+
+.movie-info button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(90deg, #e50914, #ff4500);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.movie-info button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(229,9,20,0.5);
+}
+
+.genres span {
+  display: inline-block;
+  background: #333;
+  padding: 5px 10px;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+/* ---------- Cast & Crew ---------- */
+.cast-list, .crew-list {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.cast-list .actor {
+  min-width: 120px;
+  text-align: center;
+}
+
+.cast-list img {
+  width: 100px;
+  height: 140px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* ---------- Trailer ---------- */
+.trailer-section {
+  margin: 40px 0;
+}
+
+/* ---------- Reviews ---------- */
+.reviews-section {
+  margin: 40px 0;
+}
+
+#reviewForm {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+#reviewForm textarea {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  resize: none;
+  min-height: 80px;
+  margin-bottom: 10px;
+}
+
+#reviewForm button {
+  align-self: flex-end;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 25px;
+  background: #e50914;
+  color: white;
+  cursor: pointer;
+}
+
+.review-card {
+  background: #1f1f1f;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* ---------- Footer ---------- */
+footer {
+  margin-left: 260px;
+  padding: 25px;
+  text-align: center;
+  border-top: 1px solid #333;
+  color: #888;
+  background: #1f1f1f;
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #333;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 5px;
+  display: none;
+  opacity: 0.95;
+}
+.toast.success { background: #28a745; }
+.toast.error { background: #dc3545; }

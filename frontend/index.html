@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movie Review Platform</title>
+
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+
+<style>
+/* Base Styles */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#121212;color:#eee;overflow-x:hidden;}
+html{scroll-behavior:smooth;}
+
+/* Navbar */
+header{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;
+padding:15px 50px;z-index:1000;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);box-shadow:0 2px 10px rgba(0,0,0,0.5);}
+header h1{color:#e50914;font-size:26px;font-weight:700;letter-spacing:1px;text-shadow:0 0 5px rgba(229,9,20,0.5);}
+nav a{color:#eee;text-decoration:none;margin-left:30px;font-weight:500;transition:.4s;position:relative;padding:5px 0;}
+nav a::after{content:'';position:absolute;left:0;bottom:0;width:0;height:2px;background:#e50914;transition:width .4s;}
+nav a:hover{color:#e50914;}
+nav a:hover::after{width:100%;}
+
+/* Hero */
+.hero{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#fff;position:relative;overflow:hidden;}
+.hero video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1;filter:brightness(0.4);}
+.hero::after{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);}
+.hero-content{position:relative;z-index:2;}
+.hero h2{font-size:60px;margin-bottom:20px;color:#e50914;text-shadow:0 4px 8px rgba(0,0,0,0.7);}
+.hero p{font-size:22px;margin-bottom:40px;color:#eee;text-shadow:0 2px 5px rgba(0,0,0,0.6);}
+.btn{padding:14px 35px;background:#e50914;color:#121212;border:none;border-radius:30px;cursor:pointer;
+font-size:19px;font-weight:600;transition:.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+box-shadow:0 6px 15px rgba(229, 9, 20, 0.4);}
+.btn:hover{background:#b20710;transform:scale(1.1);box-shadow:0 8px 20px rgba(229, 9, 20, 0.6);}
+
+/* Sections */
+section{padding:100px 60px;position:relative;}
+section h2{text-align:center;font-size:42px;margin-bottom:60px;color:#e50914;position:relative;text-transform:uppercase;letter-spacing:1.5px;}
+section h2::after{content:'';position:absolute;left:50%;bottom:-10px;width:80px;height:4px;background:#e50914;transform:translateX(-50%);border-radius:2px;}
+
+/* Featured Movies */
+.featured-movies .movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 25px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.movie-card {
+  position: relative;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 8px 20px rgba(0,0,0,0.5);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+  opacity:0;
+  transform: translateY(20px);
+}
+.movie-card img {
+  width:100%;
+  height:270px;
+  object-fit:cover;
+  transition: transform 0.6s ease;
+  filter: brightness(0.85);
+}
+.movie-card:hover img { transform: scale(1.1); filter: brightness(1); }
+.movie-card .overlay {
+  position: absolute;
+  top:0; left:0; width:100%; height:100%;
+  background: rgba(0,0,0,0.8);
+  color:#e50914;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  transition: opacity 0.4s ease;
+  font-weight:600;
+  text-align:center;
+  padding:15px;
+}
+.movie-card:hover .overlay { opacity:1; }
+.overlay h4 { font-size:18px; margin-bottom:8px; }
+.overlay p { font-size:16px; }
+
+/* Contact */
+.contact{background:#1e1e1e;margin-top:0px;color:#eee;}
+.contact-wrapper{display:grid;grid-template-columns:1fr 1.2fr;gap:60px;max-width:1100px;margin:0 auto;}
+.contact-info{background:#2c2c2c;padding:40px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.7);transform:translateX(-80px);opacity:0;transition:.8s; border-left:5px solid #e50914;}
+.contact-info h3{margin-bottom:25px;color:#e50914;font-size:28px;}
+.info-item{margin-bottom:20px;font-size:18px;color:#eee;display:flex;align-items:center;}
+.info-item i{color:#e50914;margin-right:15px;font-size:24px;transition:.3s;}
+.info-item i:hover{color:#b20710;transform:scale(1.3) rotate(10deg);}
+.contact-form{background:#2c2c2c;padding:40px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.7);transform:translateX(80px);opacity:0;transition:.8s; border-right:5px solid #e50914;}
+.contact-form input,.contact-form textarea{width:100%;padding:15px;margin-bottom:25px;border:1px solid #555;border-radius:10px;font-size:17px;background:#1e1e1e;color:#eee; transition:.3s;}
+.contact-form input:focus,.contact-form textarea:focus{border-color:#e50914;box-shadow:0 0 8px rgba(229, 9, 20, 0.3);outline:none;}
+.contact-form button{width:100%;padding:15px;border:none;border-radius:10px;background:#e50914;color:#121212;font-size:19px;cursor:pointer;transition:.4s;font-weight:600;}
+.contact-form button:hover{background:#b20710;transform:translateY(-3px);box-shadow:0 6px 15px rgba(229,9,20,0.4);}
+.social-links{text-align:center;margin-top:30px;}
+.social-links a{margin:0 15px;font-size:28px;text-decoration:none;color:#e50914;transition:.4s;display:inline-block;}
+.social-links a:hover{color:#b20710;transform:scale(1.4) rotate(5deg);}
+
+/* Footer */
+footer{background:#111;color:#bbb;text-align:center;padding:40px;font-size:16px;}
+.footer-links{margin-bottom:20px;}
+.footer-links a{color:#e50914;text-decoration:none;margin:0 18px;transition:.3s;}
+.footer-links a:hover{color:#fff;text-decoration:underline;}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #333;
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 5px;
+  display: none;
+  z-index: 2000;
+}
+.toast.success { background: green; }
+.toast.error { background: red; }
+
+/* Modals */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;z-index:2000;}
+.modal-content{background:#1e1e1e;padding:40px;border-radius:15px;width:380px;text-align:center;position:relative;box-shadow:0 10px 30px rgba(0,0,0,0.8);color:#eee;}
+.modal-content h2{font-size:32px;margin-bottom:20px;color:#e50914;}
+.modal-content p{font-size:18px;margin-bottom:30px;color:#ccc;}
+.modal-content .btn{display:block;margin:15px auto;width:80%;}
+.modal-close{position:absolute;top:15px;right:20px;cursor:pointer;font-size:24px;color:#aaa;transition:.3s;}
+.modal-close:hover{color:#e50914;transform:rotate(90deg);}
+
+/* Animations */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.show{opacity:1!important;transform:translateY(0)!important;transition:all 1s ease;}
+@media(max-width:992px){section{padding:80px 30px;}.contact-wrapper{grid-template-columns:1fr;}}
+@media(max-width:576px){header{padding:10px 20px;}header h1{font-size:20px}nav{display:none}section{padding:60px 20px}}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<header>
+  <h1>MovieReview</h1>
+  <nav>
+    <a href="#featured">Featured</a>
+    <a href="#contact">Contact</a>
+    <a href="#" onclick="openAuthModal()">Get Started</a>
+  </nav>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <video autoplay muted loop playsinline>
+    <source src="https://media.istockphoto.com/id/1045560244/video/streaming-media-technology-and-multimedia-concept.mp4?s=mp4-640x640-is&k=20&c=yMQjXipYVMUu8C25bhPRZQYV9hXh-_hbE3QLSBaAt-s=" type="video/mp4">
+  </video>
+  <div class="hero-content">
+    <h2>Discover & Review Movies</h2>
+    <p>Explore trending movies and share your reviews.</p>
+    <button class="btn" onclick="openAuthModal()">Get Started</button>
+  </div>
+</section>
+
+<!-- Featured Movies -->
+<section class="featured-movies" id="featured">
+  <h2>Featured Movies</h2>
+  <div class="movie-grid" id="movieGrid"></div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+  <h2>Contact Us</h2>
+  <div class="contact-wrapper">
+    <div class="contact-info">
+      <h3>Get in Touch</h3>
+      <div class="info-item"><i class="fas fa-phone"></i> +91 9876543210</div>
+      <div class="info-item"><i class="fas fa-envelope"></i> info@moviereview.com</div>
+      <div class="info-item"><i class="fas fa-map-marker-alt"></i> Hyderabad, India</div>
+    </div>
+    <form class="contact-form" id="contactForm">
+      <input type="text" name="name" placeholder="Your Name" required/>
+      <input type="email" name="email" placeholder="Your Email" required/>
+      <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+  <div class="social-links">
+    <a href="#"><i class="fab fa-facebook-f"></i></a>
+    <a href="#"><i class="fab fa-twitter"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-links">
+    <a href="#featured">Featured</a>
+    <a href="#contact">Contact</a>
+  </div>
+  &copy; 2025 Movie Review Platform. All rights reserved.
+</footer>
+
+<!-- Auth Modal -->
+<div id="authModal" class="modal-overlay">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeAuthModal()">✖</span>
+    <h2>Welcome!</h2>
+    <p>Get started by logging in or signing up.</p>
+    <button class="btn" onclick="location.href='login.html'">Login</button>
+    <button class="btn" onclick="location.href='signup.html'">Sign Up</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<script>
+// Sample movies array
+const movies = [
+  { title:"Inception", rating:"8.8", img:"https://image.tmdb.org/t/p/w500/edv5CZvWj09upOsy2Y6IwDhK8bt.jpg" },
+  { title:"Interstellar", rating:"8.6", img:"https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg" },
+  { title:"The Dark Knight", rating:"9.0", img:"https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" },
+  { title:"Tenet", rating:"7.5", img:"https://image.tmdb.org/t/p/w500/k68nPLbIST6NP96JmTxmZijEvCA.jpg" }
+];
+
+const movieGrid = document.getElementById('movieGrid');
+movies.forEach(movie => {
+  const card = document.createElement('div');
+  card.className = 'movie-card';
+  card.innerHTML = `
+    <img src="${movie.img}" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/500x750?text=No+Image'">
+    <div class="overlay">
+      <h4>${movie.title}</h4>
+      <p>Rating: ${movie.rating}</p>
+    </div>
+  `;
+  movieGrid.appendChild(card);
+});
+
+// Scroll Animations
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){ entry.target.classList.add('show'); }
+  });
+},{threshold:0.2});
+document.querySelectorAll('.movie-card,.contact-info,.contact-form').forEach(el=>observer.observe(el));
+
+// Auth Modal
+function openAuthModal(){ document.getElementById('authModal').style.display='flex'; }
+function closeAuthModal(){ document.getElementById('authModal').style.display='none'; }
+document.getElementById('authModal').addEventListener('click', e=>{ if(e.target===document.getElementById('authModal')) closeAuthModal(); });
+
+// Toast function
+function showToast(msg, type){
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.className = "toast " + type;
+  toast.style.display = "block";
+  setTimeout(()=>{ toast.style.display="none"; }, 3000);
+}
+
+// ---------- Contact Form Submission ----------
+const API_BASE = "http://localhost:5000/api";
+const contactForm = document.getElementById("contactForm");
+
+if(contactForm){
+  contactForm.addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    const name = this.name.value.trim();
+    const email = this.email.value.trim();
+    const message = this.message.value.trim();
+
+    if(!name || !email || !message){
+      showToast("All fields are required ❌", "error");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message })
+      });
+
+      const data = await res.json();
+
+      if(res.ok){
+        showToast("Message sent successfully ✅", "success");
+        this.reset();
+      } else {
+        showToast(data.error || "Failed to send message ❌", "error");
+      }
+    } catch(err){
+      console.error(err);
+      showToast("Failed to send message ❌", "error");
+    }
+  });
+}
+</script>
+
+</body>
+</html>
