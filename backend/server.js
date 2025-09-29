@@ -12,6 +12,8 @@ const tmdbRoutes = require('./src/routes/tmdbRoutes');
 
 const profileRoutes = require('./src/routes/profileRoutes.js');
 
+
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -47,6 +49,11 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+
+
+// Serve frontend (optional)
+// app.use(express.static(path.join(__dirname, 'frontend')));
+
 // -------------------
 // Mount Routes
 // -------------------
@@ -56,17 +63,6 @@ app.use('/api/movies', movieRoutes);  // movies CRUD + favorites
 app.use('/api/reviews', reviewRoutes); // ✅ reviews routes
 app.use('/api/tmdb', tmdbRoutes);
 app.use('/api/profile', profileRoutes);
-
-// -------------------
-// Serve frontend (added for Render deployment)
-// -------------------
-app.use(express.static(path.join(__dirname, '../frontend')));
-app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, '../frontend/index.html'));
-  }
-});
-
 // -------------------
 // TMDb Cache
 // -------------------
@@ -90,6 +86,7 @@ function setCache(key, data, ttl = 1000 * 60 * 5) {
 async function axiosGetWithRetry(url, params, retries = 1) {
   try {
     const res = await axiosInstance.get(url, { params });
+
     return res.data;
   } catch (err) {
     if (retries > 0) {
