@@ -59,10 +59,7 @@ const corsOptions = {
   allowedHeaders: ["Content-Type","Authorization"],
   credentials: true
 };
-
-// ✅ Run initDb only in production (Render)
-if (process.env.NODE_ENV === "production") {
-  console.log("🌐 Running initDb in production...");
+if (process.env.RUN_INIT_DB === "true") {
   require("./src/config/initDb");
 }
 
@@ -399,6 +396,7 @@ app.get('/movies/trending/:time_window', async (req, res) => {
 // -------------------
 app.listen(PORT, () => {
   console.log("TMDb API Key:", process.env.TMDB_API_KEY);
+    console.log("🌐 Running initDb in production...");
   console.log(`✅ Server running at http://localhost:${PORT}`);
   console.log(`✅ Frontend served from ${frontendPath}`); 
 });

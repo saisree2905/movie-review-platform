@@ -1,5 +1,6 @@
 // initDb.js
-const db = require('./src/config/db'); // import existing db connection
+const db = require('./db');
+
 
 const queries = [
   // Users table
