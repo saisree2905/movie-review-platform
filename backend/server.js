@@ -55,7 +55,7 @@ app.use(cors(corsOptions));
 // -------------------
 // Serve frontend statically
 // -------------------
-const frontendPath = path.join(__dirname, 'frontend');
+const frontendPath = path.join(__dirname, '../frontend');
 app.use(express.static(frontendPath));
 
 // This ensures frontend URLs like dashboard.html, genre.html, etc., work
