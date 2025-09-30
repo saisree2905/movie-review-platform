@@ -9,7 +9,6 @@ const authRoutes = require('./src/routes/authRoutes');
 const movieRoutes = require('./src/routes/movieRoutes');
 const reviewRoutes = require('./src/routes/reviewRoutes'); // ✅ added
 const tmdbRoutes = require('./src/routes/tmdbRoutes');
-
 const profileRoutes = require('./src/routes/profileRoutes.js');
 
 
@@ -19,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 
 const https = require('https');
 const axiosInstance = axios.create({
-  timeout: 10000, // 10 seconds
+  timeout: 60000, // 10 seconds
   httpsAgent: new https.Agent({ keepAlive: true }),
 });
 
@@ -42,17 +41,31 @@ app.use(express.urlencoded({ extended: true }));
 
 // ✅ CORS setup
 const corsOptions = {
-  origin: ["http://127.0.0.1:8080", "http://localhost:8080"], // match your live-server URL
+  origin: [
+    "http://127.0.0.1:8080",
+    "http://localhost:8080",
+    process.env.FRONTEND_URL || "*" // allow deployed frontend dynamically
+  ],
   methods: ["GET","POST","PUT","DELETE","OPTIONS"],
   allowedHeaders: ["Content-Type","Authorization"],
   credentials: true
 };
 app.use(cors(corsOptions));
 
+// -------------------
+// Serve frontend statically
+// -------------------
+const frontendPath = path.join(__dirname, 'frontend');
+app.use(express.static(frontendPath));
 
-
-// Serve frontend (optional)
-// app.use(express.static(path.join(__dirname, 'frontend')));
+// This ensures frontend URLs like dashboard.html, genre.html, etc., work
+app.get('*', (req, res, next) => {
+  // Skip API routes
+  if (req.path.startsWith('/api') || req.path.startsWith('/movies') || req.path.startsWith('/search') || req.path.startsWith('/genres')) {
+    return next();
+  }
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
 
 // -------------------
 // Mount Routes
@@ -371,4 +384,5 @@ app.get('/movies/trending/:time_window', async (req, res) => {
 app.listen(PORT, () => {
   console.log("TMDb API Key:", process.env.TMDB_API_KEY);
   console.log(`✅ Server running at http://localhost:${PORT}`);
+  console.log(`✅ Frontend served from ${frontendPath}`); 
 });
