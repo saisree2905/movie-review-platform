@@ -41,16 +41,26 @@ app.use(express.urlencoded({ extended: true }));
 
 // ✅ CORS setup
 const corsOptions = {
-  origin: [
-    "http://127.0.0.1:8080",
-    "http://localhost:8080",
-    process.env.FRONTEND_URL || "*" // allow deployed frontend dynamically
-  ],
+  origin: function(origin, callback) {
+    const allowedOrigins = [
+      "http://127.0.0.1:8080",
+      "http://localhost:8080",
+      process.env.FRONTEND_URL
+    ].filter(Boolean);
+
+    if (!origin) return callback(null, true); // allow non-browser requests
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true); // allow this origin
+    } else {
+      callback(new Error("CORS not allowed from this origin: " + origin));
+    }
+  },
   methods: ["GET","POST","PUT","DELETE","OPTIONS"],
   allowedHeaders: ["Content-Type","Authorization"],
   credentials: true
 };
-app.use(cors(corsOptions));
+
+app.use(cors(corsOptions)); // ✅ this is correct
 
 // -------------------
 // Serve frontend statically

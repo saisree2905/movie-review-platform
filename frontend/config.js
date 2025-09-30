@@ -19,13 +19,21 @@
 // console.log("Using API_BASE:", API_BASE); // debug
 
 
-// config.js
+// // config.js
 
-// Force local backend
-const BASE_URL = 'http://localhost:5000';
+// // Force local backend
+// const BASE_URL = 'http://localhost:5000';
+// const API_BASE = `${BASE_URL}/api`;
+// console.log("API_BASE set to:", API_BASE);
+
+let BASE_URL;
+if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+  BASE_URL = "http://localhost:5000";
+} else {
+  BASE_URL = "https://movie-review-platform-ni74.onrender.com";
+}
 const API_BASE = `${BASE_URL}/api`;
 console.log("API_BASE set to:", API_BASE);
-
 
 
 // // config.js
