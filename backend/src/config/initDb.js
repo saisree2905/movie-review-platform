@@ -1,5 +1,5 @@
 // initDb.js
-const db = require("./db").promise(); // use promise pool
+const db = require("./db"); // use promise pool
 const bcrypt = require("bcryptjs");
 
 const queries = [
