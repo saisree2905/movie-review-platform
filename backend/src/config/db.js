@@ -3,25 +3,20 @@ require("dotenv").config({
   path: process.env.NODE_ENV === "production" ? ".env.local" : ".env"
 });
 
-// Create a connection pool for better reliability in production
-const db = mysql.createPool({
+const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  ssl: {
-    rejectUnauthorized: false
-  }
+  ssl: process.env.NODE_ENV === "production" ? false : undefined
 });
 
-// Test connection
-db.getConnection((err, connection) => {
+db.connect((err) => {
   if (err) {
-    console.error("❌ MySQL connection failed:", err.message);
-    process.exit(1); // Exit server if DB is unreachable
+    console.error("❌ Database connection failed:", err.message);
+    return;
   }
   console.log("✅ Connected to MySQL database!");
-  if (connection) connection.release(); // release back to pool
 });
 
 module.exports = db;
