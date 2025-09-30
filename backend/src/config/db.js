@@ -15,10 +15,10 @@ const poolOptions = {
   queueLimit: 0,
 };
 
-// Enable SSL for Render
-if (process.env.NODE_ENV === "production") {
-  poolOptions.ssl = { rejectUnauthorized: false };
-}
+// // Enable SSL for Render
+// if (process.env.NODE_ENV === "production") {
+//   poolOptions.ssl = { rejectUnauthorized: false };
+// }
 
 const db = mysql.createPool(poolOptions);
 
