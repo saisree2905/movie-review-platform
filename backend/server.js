@@ -60,6 +60,12 @@ const corsOptions = {
   credentials: true
 };
 
+// ✅ Run initDb only in production (Render)
+if (process.env.NODE_ENV === "production") {
+  console.log("🌐 Running initDb in production...");
+  require("./src/config/initDb");
+}
+
 app.use(cors(corsOptions)); // ✅ this is correct
 
 // -------------------
