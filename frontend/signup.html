@@ -46,9 +46,11 @@ header h1{color:#e50914;font-size:26px;font-weight:700;}
 
 <div id="toast" class="toast"></div>
 
-<script>
-const API_BASE = "http://localhost:5000/api";
+<script src="config.js"></script>
 
+<script>
+// const API_BASE = "http://localhost:5000/api";
+// const API_BASE = `${BASE_URL}/api`; 
 window.addEventListener('load', () => {
   const wrapper = document.getElementById('signupFormWrapper');
   setTimeout(() => { wrapper.classList.add('show'); }, 300);

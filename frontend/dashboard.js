@@ -239,6 +239,7 @@ document.querySelector('.profile-picture').addEventListener('click', () => {
 async function loadHomepage() {
   try {
     const res = await fetch("http://localhost:5000/movies/homepage");
+    // const res = await fetch(`${API_BASE}/movies/homepage`);
     const data = await res.json();
 
     populateSection("trendingSection", data.popular || []);
