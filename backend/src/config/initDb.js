@@ -1,32 +1,6 @@
 // initDb.js
-const mysql = require("mysql2");
+const db = require("./db").promise(); // use promise pool
 const bcrypt = require("bcryptjs");
-require("dotenv").config({
-  path: process.env.NODE_ENV === "production" ? ".env.local" : ".env"
-});
-
-// MySQL connection options
-const dbOptions = {
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-};
-
-// If Render requires SSL, add this
-if (process.env.NODE_ENV === "production") {
-  dbOptions.ssl = { rejectUnauthorized: false };
-}
-
-const db = mysql.createConnection(dbOptions);
-
-db.connect((err) => {
-  if (err) {
-    console.error("❌ Database connection failed:", err.message);
-    process.exit(1);
-  }
-  console.log("✅ Connected to MySQL database!");
-});
 
 const queries = [
   // Users table
@@ -46,23 +20,23 @@ const queries = [
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );`,
   // Movie table
-  `CREATE TABLE IF NOT EXISTS movie (
+  `CREATE TABLE IF NOT EXISTS movies (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT,
     release_date DATE,
-    poster_url VARCHAR(255),
-    release_year YEAR,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    poster VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    release_year YEAR
   );`,
-  // Favourites table
-  `CREATE TABLE IF NOT EXISTS favourites (
+  // Favorites table
+  `CREATE TABLE IF NOT EXISTS favorites (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     movie_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (movie_id) REFERENCES movie(id) ON DELETE CASCADE
+    FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
   );`,
   // Reviews table
   `CREATE TABLE IF NOT EXISTS reviews (
@@ -73,45 +47,38 @@ const queries = [
     comment TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (movie_id) REFERENCES movie(id) ON DELETE CASCADE
-  );`
+    FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
+  );`,
 ];
 
 (async () => {
   try {
+    // Create tables
     for (const query of queries) {
-      await new Promise((resolve, reject) => {
-        db.query(query, (err, result) => {
-          if (err) return reject(err);
-          resolve(result);
-        });
-      });
+      await db.query(query);
     }
-
     console.log("✅ All tables created successfully!");
 
-    // Insert test user with hashed password
+    // Insert test user if not exists
     const testEmail = "test@example.com";
-    const testPassword = "123456";
+    const testPassword = await bcrypt.hash("123456", 10); // hash password
     const testName = "Test User";
-    const hashedPassword = bcrypt.hashSync(testPassword, 10);
 
-    await new Promise((resolve, reject) => {
-      db.query(
-        `INSERT IGNORE INTO users (name, email, password) VALUES (?, ?, ?)`,
-        [testName, testEmail, hashedPassword],
-        (err, result) => {
-          if (err) return reject(err);
-          console.log("✅ Test user inserted (if not exists):", testEmail);
-          resolve(result);
-        }
-      );
-    });
+    const [existing] = await db.query("SELECT * FROM users WHERE email = ?", [testEmail]);
+    if (!existing.length) {
+      await db.query("INSERT INTO users (name,email,password) VALUES (?,?,?)", [
+        testName,
+        testEmail,
+        testPassword,
+      ]);
+      console.log("✅ Test user inserted:", testEmail);
+    } else {
+      console.log("ℹ️ Test user already exists:", testEmail);
+    }
 
-    db.end();
   } catch (err) {
-    console.error("❌ Error creating tables:", err.message);
-    db.end();
-    process.exit(1);
+    console.error("❌ Error initializing DB:", err);
+  } finally {
+    await db.end(); // close pool
   }
 })();
