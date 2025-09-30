@@ -59,9 +59,11 @@ const corsOptions = {
   allowedHeaders: ["Content-Type","Authorization"],
   credentials: true
 };
-if (process.env.RUN_INIT_DB === "true") {
+if (process.env.NODE_ENV === "production") {
+  console.log("🌐 Running initDb in production...");
   require("./src/config/initDb");
 }
+
 
 app.use(cors(corsOptions)); // ✅ this is correct
 
