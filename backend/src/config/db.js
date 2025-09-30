@@ -1,29 +1,23 @@
-// db.js
 const mysql = require("mysql2");
-require("dotenv").config({
-  path: process.env.NODE_ENV === "production" ? ".env.local" : ".env"
-});
+require("dotenv").config();
 
-// Pool config
 const poolOptions = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   waitForConnections: true,
-  connectionLimit: 10, // number of connections in pool
+  connectionLimit: 10,
   queueLimit: 0,
 };
 
-// // Enable SSL for Render
-// if (process.env.NODE_ENV === "production") {
-//   poolOptions.ssl = { rejectUnauthorized: false };
-// }
+if (process.env.NODE_ENV === "production") {
+  poolOptions.ssl = false; // important
+}
 
-const db = mysql.createPool(poolOptions);
+const pool = mysql.createPool(poolOptions);
 
-// Test connection
-db.getConnection((err, connection) => {
+pool.getConnection((err, connection) => {
   if (err) {
     console.error("❌ Database connection failed:", err.message);
     process.exit(1);
@@ -32,4 +26,4 @@ db.getConnection((err, connection) => {
   connection.release();
 });
 
-module.exports = db.promise(); // Use promise wrapper for async/await
+module.exports = pool.promise();
