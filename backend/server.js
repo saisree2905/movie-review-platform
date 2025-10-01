@@ -61,7 +61,7 @@ const corsOptions = {
 };
 if (process.env.NODE_ENV === "production") {
   console.log("🌐 Running initDb in production...");
-  require("./src/config/initDb");
+  require("./src/config/initDb")(); // ✅ call the function, not IIFE
 }
 
 
