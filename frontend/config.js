@@ -22,9 +22,8 @@
 // config.js
 
 // Force local backend
-const BASE_URL = 'http://localhost:5000';
-// const BASE_URL = "https://movie-review-platform-ni74.onrender.com";
-
+// const BASE_URL = 'http://localhost:5000';
+const BASE_URL = "https://movie-review-platform-ni74.onrender.com";
 const API_BASE = `${BASE_URL}/api`;
 console.log("API_BASE set to:", API_BASE);
 
