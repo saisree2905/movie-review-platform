@@ -1,5 +1,5 @@
 const axios = require("axios");
-
+// used only for test data
 const BASE_URL = "http://localhost:5000/api/tmdb";
 
 async function testEndpoints() {
